@@ -59,4 +59,4 @@ dotnet run info --path /path/to/file.vma --verbose
 Contributions are welcome! Please feel free to open issues or pull requests for any improvements or features you'd like to see.
 
 ## License
-This project is licensed under the [MIT License](LICENSE).
+This project is licensed under the [GNU General Public License](LICENSE).
