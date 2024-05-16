@@ -1,8 +1,10 @@
 ﻿using CommandLine;
 using CommandLine.Text;
+using System;
 using VMAComparer.CommandLine;
 
 namespace VMAComparer;
+
 
 public static class Program
 {
@@ -26,6 +28,7 @@ public static class Program
         {
             h.AdditionalNewLineAfterOption = false;
             h.AddDashesToOption = true;
+            h.AutoVersion = false;
             return HelpText.DefaultParsingErrorsHandler(result, h);
         }, e => e, verbsIndex: true);
         Console.WriteLine(helpText);
