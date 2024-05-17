@@ -31,7 +31,6 @@ public static class Program
         }, e => e, verbsIndex: true);
         Console.WriteLine(helpText);
         return 1;
-
     }
     private static Type[] LoadVerbs()
     {
