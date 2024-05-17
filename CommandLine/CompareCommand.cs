@@ -1,4 +1,5 @@
 ﻿using CommandLine;
+using VMAComparer.Aspect;
 
 namespace VMAComparer.CommandLine;
 
@@ -14,6 +15,7 @@ public class CompareCommand
     [Option('v', "verbose", Required = false, HelpText = "Enable verbose output.")]
     public bool Verbose { get; set; }
 
+    [ExceptionHandlingAspect]
     public static int Run(CompareCommand opts)
     {
         return 1;

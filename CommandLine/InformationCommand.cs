@@ -1,4 +1,6 @@
 ﻿using CommandLine;
+using VMAComparer.Aspect;
+using VMAComparer.IO.File;
 
 namespace VMAComparer.CommandLine;
 
@@ -11,9 +13,10 @@ public class InformationCommand
     [Option('v', "verbose", Required = false, HelpText = "Enable verbose output.")]
     public bool Verbose { get; set; }
 
-
+    [ExceptionHandlingAspect]
     public static int Run(InformationCommand opts)
     {
+        using var stream = VmaFileReader.Open(opts.Path);
         return 1;
     }
 }
