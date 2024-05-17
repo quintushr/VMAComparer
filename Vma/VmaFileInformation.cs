@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Buffers.Binary;
 using System.IO;
+using VMAComparer.Utility;
 
 namespace VMAComparer.Vma;
 
@@ -13,17 +14,10 @@ public class VmaFileInformation
     {
         FileSize = stream.Length;
 
-        var cTime = BinaryPrimitives.ReadInt64BigEndian(GetBytes(stream, 24, 8));
+        var cTime = BinaryPrimitives.ReadInt64BigEndian(stream.ReadBytesFrom(24, 8));
         BackupDate = DateTime.UnixEpoch.AddSeconds(cTime);
     }
 
-    private static byte[] GetBytes(Stream stream, int from, int length)
-    {
-        var buffer = new byte[length];
-        stream.Seek(from, SeekOrigin.Current);
-        _ = stream.Read(buffer, 0, buffer.Length);
-        return buffer;
-    }
 
     public override string ToString()
     {
