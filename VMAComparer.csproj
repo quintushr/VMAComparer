@@ -19,7 +19,6 @@
 	  </None>
 	</ItemGroup>
 	<ItemGroup>
-	  <Folder Include="IO\File\" />
 	  <Folder Include="Aspect\" />
 	</ItemGroup>
 </Project>

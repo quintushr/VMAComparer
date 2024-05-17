@@ -2,7 +2,7 @@
   "profiles": {
     "VMAComparer": {
       "commandName": "Project",
-      "commandLineArgs": "info -p C:\\Users\\QuentinHarnay\\Dtop\\vzdump-qemu-vm-103-ArxOne-PROXMOX.vma"
+      "commandLineArgs": "info -p C:\\Users\\QuentinHarnay\\Desktop\\vzdump-qemu-vm-103-ArxOne-PROXMOX.vma"
     }
   }
 }

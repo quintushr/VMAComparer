@@ -1,6 +1,8 @@
-﻿using CommandLine;
+﻿using System;
+using CommandLine;
 using VMAComparer.Aspect;
-using VMAComparer.IO.File;
+using VMAComparer.File;
+using VMAComparer.Vma;
 
 namespace VMAComparer.CommandLine;
 
@@ -10,13 +12,16 @@ public class InformationCommand
     [Option('p', "path", HelpText = "Path to the VMA file to retrieve information from.", Required = true)]
     public string Path { get; set; }
 
-    [Option('v', "verbose", Required = false, HelpText = "Enable verbose output.")]
-    public bool Verbose { get; set; }
-
     [ExceptionHandlingAspect]
     public static int Run(InformationCommand opts)
     {
-        using var stream = VmaFileReader.Open(opts.Path);
+        using var stream = VmaFileProvider.Open(opts.Path);
+        var fileInformation = new VmaFileInformation(stream).ToString();
+        var format = $"VMA File Information: {System.IO.Path.GetFileName(opts.Path)}";
+        Console.WriteLine(new string('=', format.Length));
+        Console.WriteLine(format);
+        Console.WriteLine(new string('=', format.Length));
+        Console.WriteLine(fileInformation);
         return 1;
     }
 }
