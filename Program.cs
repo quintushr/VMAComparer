@@ -1,28 +1,26 @@
 ﻿using CommandLine;
 using CommandLine.Text;
 using System;
+using System.Linq;
+using System.Reflection;
 using VMAComparer.CommandLine;
 
 namespace VMAComparer;
 
-
 public static class Program
 {
-    public static void Main(string[] args)
+    public static int Main(string[] args)
     {
-        var parser = new Parser(settings =>
-        {
-            settings.EnableDashDash = true;
-            settings.HelpWriter = null;
-        });
+        var parser = new Parser(settings => { settings.EnableDashDash = true; settings.HelpWriter = null; });
+        var parserResult = parser.ParseArguments(args, LoadVerbs());
 
-        var parserResult = parser.ParseArguments<CompareCommand, InformationCommand>(args);
-        parserResult.WithParsed((CompareCommand opts) => CompareCommand.Run(opts))
-            .WithParsed((InformationCommand opts) => InformationCommand.Run(opts))
-            .WithNotParsed(errs => DisplayHelp(parserResult));
+        return parserResult.MapResult(
+            (CompareCommand param) => CompareCommand.Run(param),
+            (InformationCommand param) => InformationCommand.Run(param),
+            _ => DisplayHelp(parserResult));
     }
 
-    private static void DisplayHelp<T>(ParserResult<T> result)
+    private static int DisplayHelp<T>(ParserResult<T> result)
     {
         var helpText = HelpText.AutoBuild(result, h =>
         {
@@ -32,5 +30,12 @@ public static class Program
             return HelpText.DefaultParsingErrorsHandler(result, h);
         }, e => e, verbsIndex: true);
         Console.WriteLine(helpText);
+        return 1;
+
+    }
+    private static Type[] LoadVerbs()
+    {
+        return Assembly.GetExecutingAssembly().GetTypes()
+            .Where(t => t.GetCustomAttribute<VerbAttribute>() != null).ToArray();
     }
 }
