@@ -1,5 +1,9 @@
-﻿using CommandLine;
+﻿using System.Buffers.Binary;
+using CommandLine;
 using VMAComparer.Aspect;
+using VMAComparer.File;
+using VMAComparer.Utility;
+using VMAComparer.Vma;
 
 namespace VMAComparer.CommandLine;
 
@@ -18,6 +22,9 @@ public class CompareCommand
     [ExceptionHandlingAspect]
     public static int Run(CompareCommand opts)
     {
+        using var sourceStream = VmaFileProvider.Open(opts.Source);
+        var sourceHeaderInformation = new VmaHeaderInformation(sourceStream);
+        //using var targetStream = VmaFileProvider.Open(opts.Target);
         return 1;
     }
-}
+}       

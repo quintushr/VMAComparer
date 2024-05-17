@@ -16,7 +16,7 @@ public class InformationCommand
     public static int Run(InformationCommand opts)
     {
         using var stream = VmaFileProvider.Open(opts.Path);
-        var fileInformation = new VmaFileInformation(stream).ToString();
+        var fileInformation = new VmaHeaderInformation(stream).ToString();
         var format = $"VMA File Information: {System.IO.Path.GetFileName(opts.Path)}";
         Console.WriteLine(new string('=', format.Length));
         Console.WriteLine(format);
