@@ -1,8 +1,6 @@
-﻿using System.Buffers.Binary;
-using CommandLine;
+﻿using CommandLine;
 using VMAComparer.Aspect;
 using VMAComparer.File;
-using VMAComparer.Utility;
 using VMAComparer.Vma;
 
 namespace VMAComparer.CommandLine;
@@ -27,4 +25,4 @@ public class CompareCommand
         //using var targetStream = VmaFileProvider.Open(opts.Target);
         return 1;
     }
-}       
+}
