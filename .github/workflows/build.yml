@@ -43,7 +43,7 @@ jobs:
     - name: Build
       run: dotnet publish --configuration Release --runtime ${{ matrix.rid }} --self-contained -p:PublishSingleFile=true -p:PublishTrimmed=true --output ./output
 
-    - name: Archive output
+    - name: Archive output (Windows)
       if: matrix.os == 'windows-latest'
       uses: actions/upload-artifact@v4
       with:
@@ -51,36 +51,36 @@ jobs:
         path: ./output/*.exe
         if-no-files-found: error
 
-    - name: Archive output
+    - name: Archive output (Non-Windows)
       if: matrix.os != 'windows-latest'
-      run: tar -czvf vma-comparer-${{ matrix.rid }}.tar.gz -C ./output .
+      run: tar -czvf vma-comparer-${{ matrix.rid }}.${{ matrix.ext }} -C ./output .
 
     - name: Upload artifact
       uses: actions/upload-artifact@v4
+      if: matrix.os != 'windows-latest'
       with:
         name: vma-comparer-${{ matrix.rid }}
-        path: vma-comparer-${{ matrix.rid }}.${{ matrix.ext }}
+        path: ./output/*.${{ matrix.ext }}
         if-no-files-found: error
-
 
   release:
     needs: build
     runs-on: ubuntu-latest
 
     steps:
-    - name: Download artifacts
+    - name: Download Linux Artifact
       uses: actions/download-artifact@v4
       with:
         name: vma-comparer-linux-x64
         path: ./artifacts/linux-x64
 
-    - name: Download artifacts
+    - name: Download Windows Artifact
       uses: actions/download-artifact@v4
       with:
         name: vma-comparer-win-x64
         path: ./artifacts/win-x64
 
-    - name: Download artifacts
+    - name: Download macOS Artifact
       uses: actions/download-artifact@v4
       with:
         name: vma-comparer-osx-x64
