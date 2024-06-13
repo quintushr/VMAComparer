@@ -4,8 +4,8 @@
 VMA Comparer is a command-line application built on .NET 8 that facilitates the comparison of VMA (Virtual Machine Archive) backup files. Since the 2.3 release, Proxmox Virtual Environment (PVE) has introduced a new backup format called VMA, replacing the old common .tar format. VMA files, like the old .tar files, can be compressed in .lzo or .gz formats. This tool aids in comparing VMA backup files, providing insights into the block-level differences between two VMA files, as well as displaying header information of a single VMA file.
 
 ## Features
-- **Comparison Command**: Compare two VMA backup files block by block to identify differences.
 - **Information Command**: Display header information of a single VMA backup file.
+- **Comparison Command**: Compare two VMA backup files block by block to identify differences.
 - **Verbose Output**: Enable verbose output for more detailed information during execution.
 
 ## Installation
@@ -27,32 +27,50 @@ To use VMA Comparer, ensure you have [.NET 8 SDK](https://dotnet.microsoft.com/d
    ```
 
 ## Usage
-### Compare Command
-Compare two VMA backup files block by block.
-```bash
-dotnet run compare --source <source-path> --target <target-path> [--verbose]
-```
-- `source-path`: Path to the source VMA backup file.
-- `target-path`: Path to the target VMA backup file.
-- `--verbose`: (Optional) Enable verbose output.
 
 ### Information Command
 Display header information of a single VMA backup file.
+
 ```bash
-dotnet run info --path <vma-file-path> [--verbose]
+dotnet run info --path <vma-file-path>
 ```
+
 - `vma-file-path`: Path to the VMA backup file.
+
+#### Example
+```bash
+dotnet run info --path /path/to/file.vma
+```
+
+### Compare Command
+Compare two VMA backup files block by block.
+
+```bash
+dotnet run compare --source <source-path> --target <target-path> [--details] [--verbose]
+```
+
+- `source-path`: Path to the source VMA backup file.
+- `target-path`: Path to the target VMA backup file.
+- `--details`: (Optional) Display detailed block comparison.
 - `--verbose`: (Optional) Enable verbose output.
 
-## Examples
-### Compare Command
+#### Example
 ```bash
-dotnet run compare --source /path/to/source.vma --target /path/to/target.vma --verbose
+dotnet run compare --source /path/to/source.vma --target /path/to/target.vma --details --verbose
 ```
 
+## Examples
+
 ### Information Command
+To display header information of a VMA file:
 ```bash
-dotnet run info --path /path/to/file.vma --verbose
+dotnet run info --path /path/to/file.vma
+```
+
+### Compare Command
+To compare two VMA files and display detailed block comparison with verbose output:
+```bash
+dotnet run compare --source /path/to/source.vma --target /path/to/target.vma --details --verbose
 ```
 
 ## Contributing
