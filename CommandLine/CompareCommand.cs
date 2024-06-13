@@ -1,5 +1,6 @@
-﻿using System;
-using CommandLine;
+﻿using CommandLine;
+using System;
+using System.Linq;
 using VMAComparer.Aspect;
 using VMAComparer.File;
 using VMAComparer.Vma;
@@ -24,10 +25,6 @@ public class CompareCommand
     [ExceptionHandlingAspect]
     public static int Run(CompareCommand opts)
     {
-        // Constant
-        const int columnLength = 36;
-        const string title = "             || Source                             | Target                              ";
-
         // Source
         using var sourceStream = VmaFileProvider.Open(opts.Source);
         var sourceInformation = new VmaFileInformation(sourceStream);
@@ -36,7 +33,56 @@ public class CompareCommand
         using var targetStream = VmaFileProvider.Open(opts.Target);
         var targetInformation = new VmaFileInformation(targetStream);
 
-        // Display comparison information
+        // Display header comparison information
+        PrintHeaderComparison(opts, sourceInformation, targetInformation);
+
+        // Display details comparison information
+        PrintDetailsComparison(opts, sourceInformation, targetInformation);
+
+        return 1;
+    }
+
+    private static void PrintDetailsComparison(CompareCommand opts, VmaFileInformation sourceInformation,
+        VmaFileInformation targetInformation)
+    {
+        var maxHeaders = Math.Max(sourceInformation.VmaExtentHeaders.Count, targetInformation.VmaExtentHeaders.Count);
+        const string headersComparisonTittle = "             || Identical blocks in header";
+
+        WriteLineDetails(new string('-', headersComparisonTittle.Length), opts);
+        WriteLineDetails(headersComparisonTittle, opts);
+        WriteLineDetails(new string('-', headersComparisonTittle.Length), opts);
+        var allIdenticalBlocks = 0;
+        for (var i = 0; i < maxHeaders; i++)
+        {
+            var identicalBlocks = 0;
+            var source = sourceInformation.VmaExtentHeaders.ElementAtOrDefault(i);
+            var target = targetInformation.VmaExtentHeaders.ElementAtOrDefault(i);
+            if (source is null || target is null)
+                continue;
+
+            for (var j = 0; j < 59; j++)
+            {
+                var sourceBlock = source.BlockInfos[j];
+                var targetBlock = target.BlockInfos[j];
+                if (sourceBlock.ClusterNum == targetBlock.ClusterNum)
+                    identicalBlocks++;
+            }
+
+            WriteLineDetails($"{"Header" + i,-14}||{identicalBlocks,-31}", opts);
+            allIdenticalBlocks += identicalBlocks;
+        }
+
+        WriteLineDetails(new string('-', headersComparisonTittle.Length), opts);
+        WriteLineDetails(null, opts);
+
+        Console.WriteLine($"There are {allIdenticalBlocks} identical blocks on {maxHeaders * 59} in {maxHeaders} VMA Extent Headers between these files");
+    }
+
+    private static void PrintHeaderComparison(CompareCommand opts, VmaFileInformation sourceInformation, VmaFileInformation targetInformation)
+    {
+        const int columnLength = 36;
+        const string title = "             || Source                             | Target                              ";
+
         Console.WriteLine("VMA Files Comparison");
         Console.WriteLine($"Source File: {opts.Source}");
         Console.WriteLine($"Target File: {opts.Target}");
@@ -53,26 +99,12 @@ public class CompareCommand
         Console.WriteLine($"BackupDate   ||{sourceInformation.VmaHeader.BackupDate,-columnLength}|{targetInformation.VmaHeader.BackupDate,-columnLength}");
         Console.WriteLine($"ExtentHeaders||{sourceInformation.VmaExtentHeaders.Count,-columnLength}|{targetInformation.VmaExtentHeaders.Count,-columnLength}");
         Console.WriteLine(new string('-', title.Length));
+        Console.WriteLine();
+    }
 
-        //for (var i = 0; i < sourceBlocks.Length; i++)
-        //{
-        //    var sourceBlock = sourceBlocks[i];
-        //    var targetBlock = targetBlocks[i];
-
-        //    Console.WriteLine();
-        //    Console.WriteLine($"Block {i}");
-        //    Console.WriteLine(new string('=', title.Length));
-        //    Console.WriteLine(title);
-        //    Console.WriteLine($"ClusterNum ||{sourceBlock.ClusterNum,-columnLength}|{targetBlock.ClusterNum,-columnLength}");
-        //    Console.WriteLine($"DevId      ||{sourceBlock.DevId,-columnLength}|{targetBlock.DevId,-columnLength}");
-        //    Console.WriteLine($"Mask       ||{sourceBlock.Mask,-columnLength}|{targetBlock.Mask,-columnLength}");
-        //    Console.WriteLine($"Reserved   ||{sourceBlock.Reserved,-columnLength}|{targetBlock.Reserved,-columnLength}");
-        //    Console.WriteLine(new string('=', title.Length));
-        //    if (Equals(sourceBlock, targetBlock))
-        //        identicalBlocks++;
-        //}
-
-        //Console.WriteLine($"\n {identicalBlocks} identical blocks on {sourceBlocks.Length} blocks");
-        return 1;
+    private static void WriteLineDetails(string? value, CompareCommand opts)
+    {
+        if (opts.Details)
+            Console.WriteLine(value);
     }
 }

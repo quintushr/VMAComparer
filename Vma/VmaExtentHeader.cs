@@ -11,7 +11,7 @@ public class VMAExtentHeader
     public string Magic { get; set; }
     public ushort BlockCount { get; set; }
     public Guid Uuid { get; set; }
-    public byte[] Md5Sum { get; set; }
+    public string Md5Sum { get; set; }
     public byte[] Reserved { get; set; }
     public BlockInfo[] BlockInfos { get; set; }
 
@@ -24,7 +24,7 @@ public class VMAExtentHeader
             Reserved = stream.ReadBytes(2),
             BlockCount = stream.ReadBytesFromAndConvertUInt16(2),
             Uuid = new Guid(stream.ReadBytes(16)),
-            Md5Sum = stream.ReadBytes(16),
+            Md5Sum = BitConverter.ToString(stream.ReadBytes(16)).Replace("-", "").ToLower(),
             BlockInfos = new BlockInfo[Clusters]
         };
 

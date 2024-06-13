@@ -3,7 +3,7 @@ using System.IO;
 
 namespace VMAComparer.File;
 
-public class VmaFileProvider
+public static class VmaFileProvider
 {
     public static Stream Open(string path)
     {
