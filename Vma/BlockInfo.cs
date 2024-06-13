@@ -10,6 +10,17 @@ public class BlockInfo
     public byte Reserved { get; private init; }
     public byte DevId { get; private init; }
     public uint ClusterNum { get; private init; }
+    
+    public static BlockInfo FromReader(Stream stream)
+    {
+        return new BlockInfo
+        {
+            Mask = stream.ReadBytesFromAndConvertUInt16(2),
+            Reserved = stream.ReadOnlyByte(),
+            DevId = stream.ReadOnlyByte(),
+            ClusterNum = stream.ReadBytesFromAndConvertUInt32(4)
+        };
+    }
 
     private bool Equals(BlockInfo other)
     {
@@ -26,16 +37,5 @@ public class BlockInfo
     public override int GetHashCode()
     {
         return HashCode.Combine(Mask, Reserved, DevId, ClusterNum);
-    }
-
-    public static BlockInfo FromReader(Stream stream)
-    {
-        return new BlockInfo
-        {
-            Mask = stream.ReadBytesFromAndConvertUInt16(2),
-            Reserved = stream.ReadOnlyByte(),
-            DevId = stream.ReadOnlyByte(),
-            ClusterNum = stream.ReadBytesFromAndConvertUInt32(4)
-        };
     }
 }
