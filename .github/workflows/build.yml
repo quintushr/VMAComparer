@@ -30,7 +30,7 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Set up .NET
       uses: actions/setup-dotnet@v3
@@ -68,6 +68,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
     - name: Download Linux Artifact
       uses: actions/download-artifact@v4
       with:
@@ -85,11 +88,6 @@ jobs:
       with:
         name: vma-comparer-osx-x64
         path: ./artifacts/osx-x64
-
-    - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        ref: refs/tags/${{ inputs.tag }}
 
     - name: Create GitHub Release
       uses: ghalactic/github-release-from-tag@v5
