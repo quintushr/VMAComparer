@@ -76,5 +76,9 @@ dotnet run compare --source /path/to/source.vma --target /path/to/target.vma --d
 ## Contributing
 Contributions are welcome! Please feel free to open issues or pull requests for any improvements or features you'd like to see.
 
+## Version
+
+v0.0.1
+
 ## License
 This project is licensed under the [GNU General Public License](LICENSE).
