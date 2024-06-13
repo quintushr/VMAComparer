@@ -86,6 +86,11 @@ jobs:
         name: vma-comparer-osx-x64
         path: ./artifacts/osx-x64
 
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        ref: refs/tags/${{ inputs.tag }}
+
     - name: Create GitHub Release
       uses: ghalactic/github-release-from-tag@v5
       env:
