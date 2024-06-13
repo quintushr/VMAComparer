@@ -96,7 +96,7 @@ jobs:
         assets: |
           - path: ./artifacts/linux-x64/vma-comparer-linux-x64.tar.gz
             name: vma-comparer-linux-x64.tar.gz
-          - path: ./artifacts/win-x64/vma-comparer-win-x64.zip
-            name: vma-comparer-win-x64.zip
+          - path: ./artifacts/win-x64/*.exe
+            name: vma-comparer-win-x64.exe
           - path: ./artifacts/osx-x64/vma-comparer-osx-x64.tar.gz
             name: vma-comparer-osx-x64.tar.gz
