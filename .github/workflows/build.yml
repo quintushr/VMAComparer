@@ -49,6 +49,7 @@ jobs:
       with:
         name: vma-comparer-${{ matrix.rid }}
         path: ./output/*.exe
+        if-no-files-found: error
 
     - name: Archive output
       if: matrix.os != 'windows-latest'
@@ -59,6 +60,8 @@ jobs:
       with:
         name: vma-comparer-${{ matrix.rid }}
         path: vma-comparer-${{ matrix.rid }}.${{ matrix.ext }}
+        if-no-files-found: error
+
 
   release:
     needs: build
