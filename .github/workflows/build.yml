@@ -50,16 +50,18 @@ jobs:
         name: vma-comparer-${{ matrix.rid }}
         path: ./output/*.exe
         if-no-files-found: error
+
     - name: Archive output (Non-Windows)
       if: matrix.os != 'windows-latest'
       run: tar -czvf vma-comparer-${{ matrix.rid }}.tar.gz -C ./output .
 
     - name: Upload artifact
-      if: matrix.os != 'windows-latest'
       uses: actions/upload-artifact@v4
+      if: matrix.os != 'windows-latest'
       with:
         name: vma-comparer-${{ matrix.rid }}
         path: vma-comparer-${{ matrix.rid }}.${{ matrix.ext }}
+        if-no-files-found: error
 
   release:
     needs: build
@@ -85,42 +87,21 @@ jobs:
         path: ./artifacts/osx-x64
 
     - name: Create GitHub Release
-      id: create_release
-      uses: actions/create-release@v1
+      uses: ghalactic/github-release-from-tag@v5
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: ${{ github.ref_name }}
-        release_name: Release ${{ github.ref_name }}
         draft: false
         prerelease: false
-
-    - name: Upload Linux Artifact
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./artifacts/linux-x64/vma-comparer-linux-x64.tar.gz
-        asset_name: vma-comparer-linux-x64.tar.gz
-        asset_content_type: application/gzip
-
-    - name: Upload Windows Artifact
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./artifacts/win-x64/vma-comparer-win-x64.zip
-        asset_name: vma-comparer-win-x64.zip
-        asset_content_type: application/zip
-
-    - name: Upload macOS Artifact
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./artifacts/osx-x64/vma-comparer-osx-x64.tar.gz
-        asset_name: vma-comparer-osx-x64.tar.gz
-        asset_content_type: application/gzip
+        tag_name: ${{ github.ref_name }}
+        release_name: Release ${{ github.ref_name }}
+        assets: |
+          - path: ./artifacts/linux-x64/vma-comparer-linux-x64.tar.gz
+            name: vma-comparer-linux-x64.tar.gz
+            content-type: application/gzip
+          - path: ./artifacts/win-x64/vma-comparer-win-x64.zip
+            name: vma-comparer-win-x64.zip
+            content-type: application/zip
+          - path: ./artifacts/osx-x64/vma-comparer-osx-x64.tar.gz
+            name: vma-comparer-osx-x64.tar.gz
+            content-type: application/gzip
