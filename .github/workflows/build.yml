@@ -66,19 +66,19 @@ jobs:
 
     steps:
     - name: Download artifacts
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v4
       with:
         name: vma-comparer-linux-x64
         path: ./artifacts/linux-x64
 
     - name: Download artifacts
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v4
       with:
         name: vma-comparer-win-x64
         path: ./artifacts/win-x64
 
     - name: Download artifacts
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v4
       with:
         name: vma-comparer-osx-x64
         path: ./artifacts/osx-x64
