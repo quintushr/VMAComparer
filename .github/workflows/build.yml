@@ -92,8 +92,6 @@ jobs:
 
     - name: Create GitHub Release
       uses: ghalactic/github-release-from-tag@v5
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         draft: false
         prerelease: false
