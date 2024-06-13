@@ -50,18 +50,16 @@ jobs:
         name: vma-comparer-${{ matrix.rid }}
         path: ./output/*.exe
         if-no-files-found: error
-
     - name: Archive output (Non-Windows)
       if: matrix.os != 'windows-latest'
-      run: tar -czvf vma-comparer-${{ matrix.rid }}.${{ matrix.ext }} -C ./output .
+      run: tar -czvf vma-comparer-${{ matrix.rid }}.tar.gz -C ./output .
 
     - name: Upload artifact
-      uses: actions/upload-artifact@v4
       if: matrix.os != 'windows-latest'
+      uses: actions/upload-artifact@v4
       with:
         name: vma-comparer-${{ matrix.rid }}
-        path: ./output/*.${{ matrix.ext }}
-        if-no-files-found: error
+        path: vma-comparer-${{ matrix.rid }}.${{ matrix.ext }}
 
   release:
     needs: build
