@@ -45,7 +45,7 @@ jobs:
 
     - name: Archive output
       if: matrix.os == 'windows-latest'
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: vma-comparer-${{ matrix.rid }}
         path: ./output/*.exe
@@ -55,7 +55,7 @@ jobs:
       run: tar -czvf vma-comparer-${{ matrix.rid }}.tar.gz -C ./output .
 
     - name: Upload artifact
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: vma-comparer-${{ matrix.rid }}
         path: vma-comparer-${{ matrix.rid }}.${{ matrix.ext }}
