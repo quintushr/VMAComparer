@@ -10,6 +10,9 @@ on:
     branches:
       - main
 
+permissions:
+  contents: write  # Give write permissions to contents to create releases
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -72,5 +75,3 @@ jobs:
         asset_path: ./vma-comparer.zip
         asset_name: vma-comparer.zip
         asset_content_type: application/zip
-        path: ./output
-
