@@ -1,6 +1,6 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Text;
-using System;
 using VMAComparer.Utility;
 
 namespace VMAComparer.Vma;

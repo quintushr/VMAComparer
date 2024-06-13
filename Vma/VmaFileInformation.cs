@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Text;
-using VMAComparer.Utility;
 
 namespace VMAComparer.Vma;
 
@@ -12,7 +9,7 @@ public class VmaFileInformation
     private const int BlockSize = 4096;
     private const string MagicIdentifier = "VMAE";
 
-    public long FileSize { get; }
+    private long FileSize { get; }
 
     public VmaHeader VmaHeader { get; }
 

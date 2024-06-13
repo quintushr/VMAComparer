@@ -1,5 +1,5 @@
-﻿using System;
-using CommandLine;
+﻿using CommandLine;
+using System;
 using VMAComparer.Aspect;
 using VMAComparer.File;
 using VMAComparer.Vma;

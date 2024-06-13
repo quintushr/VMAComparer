@@ -1,9 +1,8 @@
-﻿
-namespace VMAComparer.Aspect;
-
-using PostSharp.Aspects;
+﻿using PostSharp.Aspects;
 using PostSharp.Serialization;
 using System;
+
+namespace VMAComparer.Aspect;
 
 [PSerializable]
 public class ExceptionHandlingAspect : OnMethodBoundaryAspect
