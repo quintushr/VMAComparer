@@ -7,10 +7,11 @@ using VMAComparer.Vma;
 namespace VMAComparer.CommandLine;
 
 [Verb("info", HelpText = "Display header information of VMA File.")]
-public class InformationCommand
+// ReSharper disable once ClassNeverInstantiated.Global
+public class InformationCommand(string path)
 {
     [Option('p', "path", HelpText = "Path to the VMA file to retrieve information from.", Required = true)]
-    public string Path { get; set; }
+    public string Path { get; } = path;
 
     [ExceptionHandlingAspect]
     public static int Run(InformationCommand opts)
