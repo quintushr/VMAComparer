@@ -16,6 +16,8 @@ public class VmaHeader
     public uint HeaderSize { get; }
     public DateTime BackupDate { get; }
 
+    public string Md5Checksum { get; }
+
     public VmaHeader(Stream sourceStream)
     {
         Magic = Encoding.UTF8.GetString(sourceStream.ReadBytes(4));
@@ -24,7 +26,7 @@ public class VmaHeader
 
         var cTime = sourceStream.ReadBytesFromAndConvertToLong(8);
         BackupDate = DateTime.UnixEpoch.AddSeconds(cTime);
-        sourceStream.Seek(16, SeekOrigin.Current);
+        Md5Checksum = BitConverter.ToString(sourceStream.ReadBytes(16)).Replace("-", "").ToLowerInvariant();
 
         BlobBufferOffset = sourceStream.ReadBytesFromAndConvertUInt32(4);
         BlobBufferSize = sourceStream.ReadBytesFromAndConvertUInt32(4);

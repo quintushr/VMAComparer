@@ -44,6 +44,7 @@ public class VmaFileInformation
                $"Backup Date: {VmaHeader.BackupDate.ToLocalTime()}\n" +
                $"Blob Buffer Offset: {VmaHeader.BlobBufferOffset}\n" +
                $"Blob Buffer Size: {VmaHeader.BlobBufferSize}\n" +
-               $"Header Size: {VmaHeader.HeaderSize}\n";
+               $"Header Size: {VmaHeader.HeaderSize}\n"+
+               $"Md5 Checksum: {VmaHeader.Md5Checksum}\n";
     }
 }
